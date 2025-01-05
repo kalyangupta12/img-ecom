@@ -1,6 +1,43 @@
 import mongoose, {Schema, model, models} from "mongoose";
 
-const imageVariantSchema = new Schema({
+export const IMAGE_VARIANTS = {
+    SQUARE: {
+        type:"SQUARE",
+        dimesions:{ width: 1200, height: 1200},
+        label:"Sqaure (1:1)",
+        aspectRatio: "1:1",
+    },
+    WIDE: {
+        type:"WIDE",
+        dimesions:{ width: 1920, height: 1080},
+        label:"Wide (16:9)",
+        aspectRatio: "16:9",
+    },
+    PORTRAIT: {
+        type:"PORTRAIT",
+        dimensions:{ width: 1080, height: 1440},
+        label: "Portrait (3:4)",
+        aspectRation: "3:4",
+    }
+} as const;
+
+export type ImageVariantType = keyof typeof IMAGE_VARIANTS;
+
+export interface ImageVariant {
+    type: ImageVariantType;
+    price: number,
+    license: "personal" | "commercial";
+}
+
+export interface IProduct {
+    _id?: mongoose.Types.ObjectId;
+    name: string;
+    description: string;
+    imageUrl:string;
+    variants: ImageVariant[];
+}
+
+const imageVariantSchema = new Schema<ImageVariant>({
     type: {
         type: String,
         required: true,
@@ -11,7 +48,7 @@ const imageVariantSchema = new Schema({
         required: true,
         min: 0
     },
-    licnese: {
+    license: {
         type: String,
         required: true,
         enum: ["personal","commercial"]
@@ -27,4 +64,4 @@ const productSchema = new Schema({
 
 const Product = models?.Product || model("Product", productSchema)
 
-export default productSchema;
+export default Product;

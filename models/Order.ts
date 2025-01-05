@@ -1,26 +1,31 @@
 import mongoose, {Schema, model, models} from "mongoose";
+import { ImageVariant, ImageVariantType } from "./Product";
 
-export const IMAGE_VARIANTS = {
-    SQUARE: {
-        type:"SQUARE",
-        dimesions:{ width: 1200, height: 1200},
-        label:"Sqaure (1:1)",
-        aspectRatio: "1:1",
-    },
-    WIDE: {
-        type:"WIDE",
-        dimesions:{ width: 1920, height: 1080},
-        label:"Wide (16:9)",
-        aspectRatio: "16:9",
-    },
-    PORTRAIT: {
-        type:"PORTRAIT",
-        dimensions:{ width: 1080, height: 1440},
-        label: "Portrait (3:4)",
-        aspectRation: "3:4",
-    }
-} as const;
+interface PopulatedUser{
+    _id: mongoose.Types.ObjectId;
+    email:string;
+}
 
+interface PopulatedProduct{
+    _id: mongoose.Types.ObjectId;
+    name: string;
+    imageUrl: string;
+}
+
+export interface IOrder {
+    _id?: mongoose.Types.ObjectId;
+    userId: mongoose.Types.ObjectId | PopulatedUser;
+    productId: mongoose.Types.ObjectId | PopulatedProduct;
+    variant: ImageVariant;
+    razorpayOrderId: string;
+    razorpayPaymentId: string;
+    amount: number;
+    status: "pending" | "completed" | "failed" ;
+    downloadURL?: string;
+    previewURL?:string;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
 const orderSchema = new Schema({
     userId: {type: Schema.Types.ObjectId, ref: "User", required:true},
     productId: {type: Schema.Types.ObjectId, ref: "Product", required:true},
@@ -28,7 +33,8 @@ const orderSchema = new Schema({
         type:{
             type: String,
             required: true,
-            enum: ["SQUARE", "WIDE", "PORTRAIT"]
+            enum: ["SQUARE", "WIDE", "PORTRAIT"] as ImageVariantType[],
+            set: (v: string)=> v.toUpperCase(),
         },
         price: {type: Number, required: true},
         license: {
