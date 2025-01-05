@@ -1,2 +1,2 @@
 import { IProduct } from "@/models/Product";
-import
+import ProductCard from "./ProductCard";

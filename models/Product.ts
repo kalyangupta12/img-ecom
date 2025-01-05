@@ -3,13 +3,13 @@ import mongoose, {Schema, model, models} from "mongoose";
 export const IMAGE_VARIANTS = {
     SQUARE: {
         type:"SQUARE",
-        dimesions:{ width: 1200, height: 1200},
+        dimensions:{ width: 1200, height: 1200},
         label:"Sqaure (1:1)",
         aspectRatio: "1:1",
     },
     WIDE: {
         type:"WIDE",
-        dimesions:{ width: 1920, height: 1080},
+        dimensions:{ width: 1920, height: 1080},
         label:"Wide (16:9)",
         aspectRatio: "16:9",
     },
