@@ -1,15 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+import { JetBrains_Mono } from "next/font/google";
+import Script from "next/script";
+import Providers from "./components/Providers";
+const jetBrainsMono = JetBrains_Mono({
+  subsets: ["latin"], // Subsets you need
+  weight: ["400", "500", "700"], // Font weights you want
 });
 
 export const metadata: Metadata = {
@@ -24,10 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${jetBrainsMono.className} antialiased`}>
+        <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload"/>
+          <Providers>
+            {children}
+          </Providers>
       </body>
     </html>
   );
