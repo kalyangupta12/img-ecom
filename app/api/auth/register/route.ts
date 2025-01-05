@@ -21,6 +21,8 @@ export async function POST(request: NextRequest) {
             return NextResponse.json(
                 {
                     error: "Email is already present",
+                },
+                {
                     status: 400  
                 }
             )
